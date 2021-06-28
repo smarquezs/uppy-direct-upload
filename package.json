@@ -1,0 +1,12 @@
+{
+  "name": "uppy_direct_upload",
+  "private": true,
+  "dependencies": {
+    "@rails/actioncable": "^6.0.0-alpha",
+    "@rails/activestorage": "^6.0.0-alpha",
+    "@rails/ujs": "^6.0.0-alpha",
+    "@uppy/core": "^1.19.1",
+    "turbolinks": "^5.2.0"
+  },
+  "version": "0.1.0"
+}
