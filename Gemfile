@@ -54,3 +54,7 @@ gem 'tzinfo-data', platforms: [:mingw, :mswin, :x64_mingw, :jruby]
 gem "uppy-s3_multipart", "~> 0.3"
 
 gem 'dotenv-rails', groups: [:development, :test]
+
+gem "roo"
+
+gem 'pry-rails', groups: [:development, :test]

@@ -1,3 +1,14 @@
 default: &default
   s3:
-    access_key:
+    bucket: <%= ENV['S3_BUCKET'] %>
+    access_key: <%= ENV['ACCESS_KEY'] %>
+    secret_key: <%= ENV['SECRET_KEY'] %>
+
+development:
+  <<: *default
+
+test:
+  <<: *default
+
+production:
+  <<: *default
