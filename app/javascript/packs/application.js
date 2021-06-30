@@ -15,8 +15,10 @@ require("@uppy/core")
 const AwsS3Multipart = require('@uppy/aws-s3-multipart')
 const Uppy = require('@uppy/core')
 const Dashboard = require('@uppy/dashboard')
+const Spanish = require('@uppy/locales/lib/es_ES')
 
 const fillForm = (result) => {
+  console.log(result)
   // do something
 }
 
@@ -31,27 +33,36 @@ const setupUppy = (element) => {
     restrictions: {
       allowedFileTypes: ['.xlsx']
     }
-  }).use(Dashboard, {
-    trigger: trigger
-  }).use(AwsS3Multipart, {
-    companionUrl: '/',
-  }).on('complete', (result) => {
-    if (result.successful.length > 0) {
-      let token = document.head.querySelector('meta[name="csrf-token"]').content;
-      let file = result.successful[0];
-      let url = file.uploadURL;
+  })
 
-      fetch('/upload/participants', { method: 'post',
-        headers: {
-          'Content-Type': 'application/json'
-        },
-        body: JSON.stringify({ authenticity_token: token, url: url })
-      }).then(res => res.json())
-        .then(res => {
-          console.log(res)
-          uppy.close();
-        })
+  uppy.use(Dashboard, {
+    trigger: trigger,
+    locale: Spanish
+  })
+
+  uppy.use(AwsS3Multipart, {
+    companionUrl: '/',
+  })
+
+  uppy.on('complete', (result) => {
+    if (!result.successful.length > 0) {
+      return
     }
+
+    let token = document.head.querySelector('meta[name="csrf-token"]').content;
+    let file = result.successful[0];
+    let url = file.uploadURL;
+
+    fetch('/upload/participants', { method: 'post',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify({ authenticity_token: token, url: url })
+    }).then(res => res.json())
+      .then(res => {
+        fillForm(res)
+        uppy.close();
+      })
   })
 }
 
